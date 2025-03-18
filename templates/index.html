@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Summarizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+        }
+        h2 {
+            color: #333;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            position: relative;
+        }
+        .file-upload {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .file-upload img {
+            width: 30px;
+            height: 30px;
+        }
+        input[type="file"] {
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        input[type="submit"] {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background: #218838;
+        }
+        #loading {
+            display: none;
+            font-size: 16px;
+            color: #ff4500;
+        }
+        #summary-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #summary {
+            font-size: 18px;
+            color: #333;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload a PDF to Summarize</h2>
+    <form id="uploadForm">
+        <div class="file-upload">
+            <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" alt="PDF Icon">
+            <input type="file" name="file" accept="application/pdf" required>
+        </div>
+        <br>
+        <input type="submit" value="Upload and Summarize">
+    </form>
+    <p id="loading">Processing... Please wait.</p>
+    <div id="summary-container" style="display: none;">
+        <h3>Summary:</h3>
+        <p id="summary"></p>
+    </div>
+    
+    <script>
+        document.getElementById("uploadForm").onsubmit = async (event) => {
+            event.preventDefault();
+            
+            let formData = new FormData(event.target);
+            let loadingIndicator = document.getElementById("loading");
+            let summaryContainer = document.getElementById("summary-container");
+            let summaryText = document.getElementById("summary");
+            
+            loadingIndicator.style.display = "block";
+            summaryContainer.style.display = "none";
+
+            try {
+                let response = await fetch("/upload", { method: "POST", body: formData });
+                let data = await response.json();
+                if (response.ok) {
+                    summaryText.innerText = data.summary || "No summary available.";
+                } else {
+                    summaryText.innerText = "Error: " + (data.error || "Failed to process file.");
+                }
+                summaryContainer.style.display = "block";
+            } catch (error) {
+                summaryText.innerText = "An error occurred while processing the file.";
+                summaryContainer.style.display = "block";
+            } finally {
+                loadingIndicator.style.display = "none";
+            }
+        };
+    </script>
+</body>
+</html>
