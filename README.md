@@ -27,3 +27,16 @@ This project extracts text from PDFs and summarizes them using a deep learning m
    ```bash
    git clone https://github.com/LavanyaSrinivas06/PDF_Summarizer_2025.git
    cd PDF_Summarizer_2025
+
+### Contributors
+
+This project is privately owned by Lavanya,Ruchitha and Tanishqa, students at SRH Berlin University of Applied Sciences pursuing an MSc in Computer Science, Focused on Big Data and Artificial Intelligence.
+
+Contact Information:
+
+Ruchitha Prakash - Ruchitha1111
+
+Tanishqa Venkatram - TanishqaVenkatram
+
+Lavanya Srinivas - LavanyaSrinivas06
+
